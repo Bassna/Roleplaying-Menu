@@ -72,10 +72,10 @@ While the typing is active, hitting the Escape, Enter, any of the F1-F12, Alt, T
 
 ## Special Pre-Set variables ##
 
-{TodaysDate} - Automatically inputs todays current date.
-{UTCDateTime} - Automatically inputs the current Date and Time UTC.
-{NumberOfWeeksFromToday} - Enter a number to calculate the date X weeks from today automatically.
-{RandomNumber} - Inputs a random number 1-100.
+- {TodaysDate} - Automatically inputs todays current date.
+- {UTCDateTime} - Automatically inputs the current Date and Time UTC.
+- {NumberOfWeeksFromToday} - Enter a number to calculate the date X weeks from today automatically.
+- {RandomNumber} - Inputs a random number 1-100.
 
 ![notepad_V2n6wm5NR1](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/01d47d09-ae54-482b-949b-dd9909f8ca82)
 
