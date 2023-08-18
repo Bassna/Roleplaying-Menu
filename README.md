@@ -1,6 +1,6 @@
 ## Roleplaying Menu ##
 
-Welcome to the  Roleplaying Menu! This app is your one-stop-shop for managing and using your favorite RP lines, /FloatingDo's, and much more on Eclipse RP for GTA 5. This guide provides a quick start guide, and an in-depth overview of the application's features, and user interface navigation tips. This runs off one AutoHotkey script. 
+Welcome to the  Roleplaying Menu! This app is your one-stop-shop for managing and using your favorite RP lines, /FloatingDo's, and much more on Eclipse RP for GTA 5. This guide provides a quick start guide, and an in-depth overview of the application's features, and user interface navigation tips. This runs off one AutoHotkey script.
 
 ## Overview
 
@@ -13,7 +13,7 @@ The AutoHotKey Roleplaying Menu allows you to:
 - Use single or consecutive random Category RP Line playback.
 - Adjust the app's size and transparency.
 
-
+*(Using Notepad for Examples. Default will target GTA5.exe application)*
 
 ![notepad_IXm1KrKSHU](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/752fa75f-e96a-40d5-966a-eb8989f020c8)
 
