@@ -14,7 +14,8 @@ The AutoHotKey Roleplaying Menu allows you to:
 - Adjust the app's size and transparency.
 
 
-![notepad_7l8z1vaPZy](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/cd6aa6a4-74c4-42d0-bf86-db4f70697845)
+
+![notepad_IXm1KrKSHU](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/752fa75f-e96a-40d5-966a-eb8989f020c8)
 
 
 
