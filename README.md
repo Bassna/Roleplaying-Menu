@@ -15,8 +15,8 @@ The AutoHotKey Roleplaying Menu allows you to:
 
 *(Using Notepad for Examples. Default will target GTA5.exe application)*
 
-![notepad_IXm1KrKSHU](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/752fa75f-e96a-40d5-966a-eb8989f020c8)
 
+![Example1](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/f2d74de1-1dc7-4f77-b030-cd6b335bbeca)
 
 
 
@@ -52,14 +52,16 @@ The Full Size and Compact Roleplay Window provide various functionalities:
 
 You can add RP Lines to your library by pressing the **Add RP** button. Select a saved category, or type in a new one!
 
-![ExampleAdd](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/3e18fbb6-1591-4029-9758-6ca82b09f698)
+![ExampleAdd](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/f398b46a-37b7-40ad-9435-00992be9823f)
+
 
 
 ## Random RP Lines!
 
 Choose a single category or multiple categories in sequence to get random RP lines from each!
 
-![ExampleRandom](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/23784a4a-91e0-40f5-90b3-82bf0b2d4a7e)
+![ExampleRandom](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/84040059-201d-4e01-bd5b-d18006f030ee)
+
 
 
 ## Quick Stop Safety Feature ##
@@ -77,7 +79,8 @@ While the typing is active, hitting the Escape, Enter, any of the F1-F12, Alt, T
 - {NumberOfWeeksFromToday} - Enter a number to calculate the date X weeks from today automatically.
 - {RandomNumber} - Inputs a random number 1-100.
 
-![notepad_V2n6wm5NR1](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/01d47d09-ae54-482b-949b-dd9909f8ca82)
+![SPECIAL](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/5f4f24a8-9fa6-4fda-9206-a71a1e4ff634)
+
 
 
 ## Troubleshooting ##
