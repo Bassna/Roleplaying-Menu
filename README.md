@@ -56,11 +56,17 @@ You can add RP Lines to your library by pressing the **Add RP** button. Select a
 
 
 
-## Random RP Lines!
+## Random RP Lines! ##
 
-Choose a single category or multiple categories in sequence to get random RP lines from each!
+Choose a single category to get a random line pre-saved RP for that category.
+
+![randomrandom](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/63ed922f-4e91-4061-8962-f905d7d83802)
+
+
+**Multiple categories can be selected to run in sequence, one after another in order.**
 
 ![ExampleRandom](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/84040059-201d-4e01-bd5b-d18006f030ee)
+
 
 
 
