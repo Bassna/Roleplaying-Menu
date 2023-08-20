@@ -24,7 +24,7 @@ The AutoHotKey Roleplaying Menu allows you to:
 
 ## Quick Start Guide
 
-Before we dive into the features, here's how to get started. Download and run `RoleplayingMenu.AHK`. Then, press the `F5` hotkey to open the main Roleplaying Menu. A RPLines.txt file will be created to store your Roleplay lines in the same folder.
+Before we dive into the features, here's how to get started. Download and run `RoleplayingMenu.AHK`. Then, press the `F5` hotkey to open the main Roleplaying Menu. A RPLines.txt file will be created to store your Roleplay lines in the same folder. Feel free to delete any of the example categories and lines, as they are just for example. 
 
 If you prefer not to use AutoHotKey, an alternative is to use `RoleplayingMenu.exe`. This executable runs the Roleplaying Menu on Windows and is identical to the AHK version and located in the OPTIONAL folder.
 
