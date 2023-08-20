@@ -1,4 +1,4 @@
-﻿#NoEnv                            ; Disables the automatic inclusion of parent environment variables in the script.
+#NoEnv                            ; Disables the automatic inclusion of parent environment variables in the script.
 SetWorkingDir %A_ScriptDir%       ; Sets the working directory of the script to the directory containing the script itself.
 #SingleInstance Force             ; Ensures that only a single instance of the script is allowed to run at any given time.
 #Persistent                       ; Keeps the script running even after the auto-execute section has finished.
@@ -1269,8 +1269,17 @@ ReplaceVariables(RPToSend, sectionName) {
 
     ; Initialize and store variables detected in the text
     variableList := []
+    doNotEnterFlag := false ; Flag to check if {DoNotEnter} is present
+    
     while (Pos := RegExMatch(originalRPToSend, "\{([^{}]+)\}", var)) {
         variableName := var1
+    
+        ; If the variable is {DoNotEnter}, set the flag and skip further processing for this variable
+        if (variableName = "DoNotEnter") {
+            doNotEnterFlag := true
+            originalRPToSend := StrReplace(originalRPToSend, "{DoNotEnter}", "")
+            continue
+        }
     
         ; Return an error if an empty variable is detected
         if (!variableName) {
@@ -1286,6 +1295,7 @@ ReplaceVariables(RPToSend, sectionName) {
         variableList.Push(variableName)
         originalRPToSend := StrReplace(originalRPToSend, "{" . variableName . "}", "", 1)
     }
+
 
     numVariables := variableList.Length()
 
@@ -2334,6 +2344,14 @@ SendMessagewithDelayFunction(TextToSend, SendEnter=True) {
     global stopTyping ; Global flag to control stopping of typing
     global isTypingActive ; Global flag to indicate typing activity
 
+    ; Check if {DoNotEnter} is present in the TextToSend
+    if (InStr(TextToSend, "{DoNotEnter}")) {
+        ; Remove {DoNotEnter} from the text
+        TextToSend := StrReplace(TextToSend, "{DoNotEnter}", "")
+        ; Set SendEnter to false to prevent pressing Enter
+        SendEnter := false
+    }
+
     isTypingActive := 1 ; Set the typing active flag
 
     ; Reset the stopTyping flag
@@ -2377,6 +2395,7 @@ SendMessagewithDelayFunction(TextToSend, SendEnter=True) {
     ; Reset the typing active flag
     isTypingActive := 0
 }
+
 
 
 ; Function to stop the typing operation made by SendMessagewithDelayFunction
