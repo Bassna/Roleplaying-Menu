@@ -86,9 +86,16 @@ Choose a single category to get a random line from your own pre-saved RP for tha
 
 
 
-## Quick Stop Safety Feature ##
+## Quick Stop Safety Feature
 
-While the typing is active, hitting the Escape, Enter, any of the F1-F12, Alt, Tab, and similar keys will instantly stop and clear any ongoing RP lines. However, the F11 key is unique — it will allow you to pause and then resume the typing process as needed.
+For a seamless and safe experience while you're engaged in typing, we've integrated a safety feature to give you control.
+
+- **Instant Stop**: 
+   - Pressing keys like `Escape`, `Enter`, any of the `F1-F12`, `Alt`, or `Tab` will instantly halt and clear any ongoing RP lines.
+
+- **Pause & Resume**: 
+   - The `F11` key stands out from the rest. It lets you temporarily pause the typing process and then seamlessly resume whenever you're ready.
+
 
 
 🎵 Enjoy your Roleplay with the Eclipse Roleplaying Menu! 🎵
