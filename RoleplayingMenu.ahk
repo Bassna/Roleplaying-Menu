@@ -850,6 +850,7 @@ DisplayToolTipForHelpButton:
         {UTCDateTime} - Automatically inputs the current Date and Time UTC.
         {NumberOfWeeksFromToday} - Input a number and get that date X weeks from today.
         {RandomNumber} - Inputs a random number 1-100.
+        {DoNotEnter} - Will not automatically press the Enter key on the RP line. 
     )
     ; Set a timer to remove the tooltip after 8 seconds
     SetTimer, RemoveToolTip, 8000
