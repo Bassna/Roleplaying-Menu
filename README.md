@@ -4,16 +4,20 @@ Welcome to the  Roleplaying Menu! This app is your one-stop-shop for managing an
 
 This guide provides a quick start guide, and an in-depth overview of the application's features, and user interface navigation tips. This runs off one AutoHotkey script.
 
-## Overview
+## Features of the Roleplaying Menu
 
-The AutoHotKey Roleplaying Menu allows you to:
+Dive into a streamlined experience that makes roleplaying management both fun and efficient. Here's what you can do with the AutoHotKey Roleplaying Menu:
 
-- Manage your Roleplay collection.
-- Add RP Lines and Categories.
-- Edit RP Line details.
-- Quickly delete RP Lines or entire categories from your library.
-- Use single or consecutive random Category RP Line playback.
-- Adjust the app's size and transparency.
+- **Manage Your Collection**: 
+   - Easily **Add**, **Edit**, or **Delete** any Roleplay lines or Categories, and oversee your entire Roleplay collection.
+
+- **Random Playback**:
+   - Engage in single or consecutive random Category RP Line playback for a surprise every time.
+
+- **Customize App Appearance**:
+   - Adjust both the size and transparency of the app to suit your preferences.
+
+
 
 *(Using Notepad for Examples. Default will target GTA5.exe application)*
 
