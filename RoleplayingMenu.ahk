@@ -2102,13 +2102,16 @@ RandomRP:
     ; Loop through the dropdowns and add them to the GUI
     Loop, %dropdownCount%
     {
+        ; Add a text box with the numerical index beside the dropdown
+        Gui, Add, Text, x4 y%currentY% w20 h20, % A_Index . ":"
+    
         ; Add dropdown with previously selected items if available
         if (A_Index <= currentDropdownSelections.MaxIndex()) {
             selection := currentDropdownSelections[A_Index]
             selectedIndex := GetIndex(selection, sections)
-            Gui, Add, DropDownList, vSelectedSection%A_Index% x10 y%currentY% w200 h400 Choose%selectedIndex%, % StrJoin("|", sections) 
+            Gui, Add, DropDownList, vSelectedSection%A_Index% x30 y%currentY% w190 h400 Choose%selectedIndex%, % StrJoin("|", sections)
         } else {
-            Gui, Add, DropDownList, vSelectedSection%A_Index% x10 y%currentY% w200 h400 Choose1, % StrJoin("|", sections) 
+            Gui, Add, DropDownList, vSelectedSection%A_Index% x30 y%currentY% w190 h400 Choose1, % StrJoin("|", sections)
         }
         currentY += 30 ; Move down for the next dropdown
     }
