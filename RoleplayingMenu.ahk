@@ -53,19 +53,18 @@ ReadTXTAndUpdateListView:
     {
         FileAppend, 
         (LTrim Join`n
-        [Work Tasks]
+        [Example Work]
         /me begins typing on the computer, working quickly to get the task finished.
         /me grabs a broom and begins sweeping up the dust from around the area.
         /melow begins scrubbing on the windows with cleaner, trying to get them clean.
 
-        [BLS Kit]
+        [BLS Kit Example]
         /me places the BLS kit on the floor, unzips it, and retrieves {Medical Item}.
         /me grabs {Medical Item} from the BLS kit, setting the kit on the {Surface Type}.
         /me quickly unzips the BLS kit, searches around inside and grabs out {Medical Item}.
         
         [Floating Dos]
         /fdo FLYER: ~y~Club Arcadius is the ~r~BEST ~w~nightclub in Los Santos!
-        /fdo Sign: ~y~Arcadius Loans - ~b~ Cash when you need it most.
         /fdo {Flyer, Sign or Poster}: ~f~For a good time, call {Phone Number}.
         /fdo {Poster or Flyer} Big Party at {Party Location} on {Event Date}!
         /removefdo {FDO Number} tears down the {Flyer, Note, Etc} and crumples it up.
