@@ -38,7 +38,7 @@ Welcome! Let's quickly set you up to explore all the amazing features of Rolepla
    - Once you've launched the application, simply press the `F5` key. This will bring up the main Roleplaying Menu.
 
 ### 3. **Storing Your Roleplay Lines**: 
-   - The first time you run the application, a file named `RPLines.txt` will be automatically created in the same folder. This is where all your Roleplay lines will be stored.
+   - The first time you run the application, a file named `RPLines.txt` will be automatically created in the same folder. This is where all your Roleplay lines will be stored. These are only examples and you will need to create your own RP lines and categories!
 
 ### 4. **Customize Your Content**: 
    - Inside the `RPLines.txt` file, you'll find some example categories and lines. These are just to give you an idea. Feel free to modify or delete them to make the Roleplay truly yours!
