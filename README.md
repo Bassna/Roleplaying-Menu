@@ -112,6 +112,7 @@ For a seamless and safe experience while you're engaged in typing, we've integra
 - {NumberOfWeeksFromToday} - Enter a number to calculate the date X weeks from today automatically.
 - {RandomNumber} - Inputs a random number 1-100.
 - {DoNotEnter} - Will not automatically press the Enter key on the RP line at the end.
+- {SendWithoutDelay} - Sends the typing instantly instead of typing slowly.
 
 ![SPECIAL](https://github.com/Bassna/Roleplaying-Menu/assets/33616653/5f4f24a8-9fa6-4fda-9206-a71a1e4ff634)
 
