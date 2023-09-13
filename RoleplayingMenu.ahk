@@ -53,18 +53,19 @@ ReadTXTAndUpdateListView:
     {
         FileAppend, 
         (LTrim Join`n
-        [Example Work]
+        [Work Tasks]
         /me begins typing on the computer, working quickly to get the task finished.
         /me grabs a broom and begins sweeping up the dust from around the area.
         /melow begins scrubbing on the windows with cleaner, trying to get them clean.
 
-        [BLS Kit Example]
+        [BLS Kit]
         /me places the BLS kit on the floor, unzips it, and retrieves {Medical Item}.
         /me grabs {Medical Item} from the BLS kit, setting the kit on the {Surface Type}.
         /me quickly unzips the BLS kit, searches around inside and grabs out {Medical Item}.
         
         [Floating Dos]
         /fdo FLYER: ~y~Club Arcadius is the ~r~BEST ~w~nightclub in Los Santos!
+        /fdo Sign: ~y~Arcadius Loans - ~b~ Cash when you need it most.
         /fdo {Flyer, Sign or Poster}: ~f~For a good time, call {Phone Number}.
         /fdo {Poster or Flyer} Big Party at {Party Location} on {Event Date}!
         /removefdo {FDO Number} tears down the {Flyer, Note, Etc} and crumples it up.
@@ -850,6 +851,7 @@ DisplayToolTipForHelpButton:
         {NumberOfWeeksFromToday} - Input a number and get that date X weeks from today.
         {RandomNumber} - Inputs a random number 1-100.
         {DoNotEnter} - Will not automatically press the Enter key on the RP line. 
+        {SendWithoutDelay} - Sends the line instantly with no typing delay.
     )
     ; Set a timer to remove the tooltip after 8 seconds
     SetTimer, RemoveToolTip, 8000
@@ -1274,6 +1276,13 @@ ReplaceVariables(RPToSend, sectionName) {
     while (Pos := RegExMatch(originalRPToSend, "\{([^{}]+)\}", var)) {
         variableName := var1
     
+
+        ; If the variable is {DoNotEnter} or {SendWithoutDelay}, set the flag and skip further processing for this variable
+        if (variableName = "DoNotEnter" or variableName = "SendWithoutDelay") {
+            originalRPToSend := StrReplace(originalRPToSend, "{" . variableName . "}", "")
+            continue
+        }
+
         ; If the variable is {DoNotEnter}, set the flag and skip further processing for this variable
         if (variableName = "DoNotEnter") {
             doNotEnterFlag := true
@@ -2114,22 +2123,23 @@ RandomRP:
         }
         currentY += 30 ; Move down for the next dropdown
     }
-
+    
 
     ; Add various buttons to the GUI
     Gui, Font, s9, Segoe UI Semibold        
-    Gui, Add, Button, x214 y2 w14 h14 gDisplayToolTipForHelpButtonRandomRP vHelpButtonRandomRP, ?
+    Gui, Add, Button, x224 y12 w14 h14 gDisplayToolTipForHelpButtonRandomRP vHelpButtonRandomRP, ?
     Gui, Font, s11, Segoe UI Semibold
-    Gui, Add, Button, gSubmitRandomRP x10 y%currentY% w80 Default, Submit ; Submit button
+    Gui, Add, Button, gSubmitRandomRP x30 y%currentY% w60 Default, Submit ; Submit button
     Gui, Add, Button, gCloseRandomRP x100 y%currentY% w60, Cancel         ; Cancel button
-    Gui, Add, Button, gRemoveDropdown x170 y%currentY% w20, -              ; Minus Category - button
-    Gui, Add, Button, gAddDropdown x190 y%currentY% w20, +                ; Add Category + button
+    Gui, Add, Button, gRemoveDropdown x180 y%currentY% w20, -             ; Minus Category - button
+    Gui, Add, Button, gAddDropdown x200 y%currentY% w20, +               ; Add Category + button
 
     currentY += 30 ; Adjust for next potential dropdown
 
     GuiHeight := currentY + 10 ; Set the GUI's height with some padding
-    Gui, Show, w230 h%GuiHeight%, Select Random Categories
+    Gui, Show, w240 h%GuiHeight%, Select Random Categories
 return
+
 
 
 ; Removes the last dropdown from the current selections and decreases the dropdown count
@@ -2347,12 +2357,23 @@ SendMessagewithDelayFunction(TextToSend, SendEnter=True) {
     global stopTyping ; Global flag to control stopping of typing
     global isTypingActive ; Global flag to indicate typing activity
 
+    ; Initialize a flag for SendWithoutDelay
+    SendWithoutDelay := false
+
     ; Check if {DoNotEnter} is present in the TextToSend
     if (InStr(TextToSend, "{DoNotEnter}")) {
         ; Remove {DoNotEnter} from the text
         TextToSend := StrReplace(TextToSend, "{DoNotEnter}", "")
         ; Set SendEnter to false to prevent pressing Enter
         SendEnter := false
+    }
+
+    ; Check if {SendWithoutDelay} is present in the TextToSend
+    if (InStr(TextToSend, "{SendWithoutDelay}")) {
+        ; Remove {SendWithoutDelay} from the text
+        TextToSend := StrReplace(TextToSend, "{SendWithoutDelay}", "")
+        ; Set SendWithoutDelay to true to remove character delay
+        SendWithoutDelay := true
     }
 
     isTypingActive := 1 ; Set the typing active flag
@@ -2381,8 +2402,13 @@ SendMessagewithDelayFunction(TextToSend, SendEnter=True) {
 
         ; Send the current character
         SendInput, %A_LoopField%
+        
         ; Wait based on defined sleep time per character
-        Sleep, %sleepTimePerCharacter%
+        ; Only wait if SendWithoutDelay is false
+        if (!SendWithoutDelay)
+        {
+            Sleep, %sleepTimePerCharacter%
+        }
     }
 
     ; If SendEnter is True, send Enter key
@@ -2398,6 +2424,7 @@ SendMessagewithDelayFunction(TextToSend, SendEnter=True) {
     ; Reset the typing active flag
     isTypingActive := 0
 }
+
 
 
 
