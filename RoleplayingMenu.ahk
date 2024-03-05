@@ -2386,6 +2386,9 @@ SendMessagewithDelayFunction(TextToSend, SendEnter=True) {
     ; Press the 't' key to initiate text input
     SendInput, t
 
+    ; Short delay after pressing 't' and before typing starts
+    Sleep, 100 ; Delay of 500 milliseconds
+
     ; Define sleep time per character (adjust as needed)
     sleepTimePerCharacter := 50 ; In milliseconds
 
