@@ -1397,7 +1397,7 @@ return
 
 ; Function to run a preset by its name, replicating full RunPreset functionality
 RunPresetByName(presetName) {
-    global vRPLines, stopSending, TestModeEnabled
+    global vRPLines, stopSending, TestModeEnabled, Application
 
     stopSending := 0  ; Reset the stopSending flag
     TxtFile := A_ScriptDir "\" vRPLines
@@ -1407,6 +1407,9 @@ RunPresetByName(presetName) {
     RPLineArray := []
     RPToSendArray := []
     SpecialCommands := []
+    hasTextCommands := false  ; Track if the preset has non-keypress commands
+
+    Gosub, CheckTickBoxAndClose 
 
     ; Parse the file to find and load the specified preset
     Loop, Parse, content, `n, `r
@@ -1454,6 +1457,7 @@ RunPresetByName(presetName) {
         if (RegExMatch(RPToSend, "KeyPress: \[(.*?)\]")) {
             SpecialCommands.Push({index: index, command: RPToSend})
         } else {
+            hasTextCommands := true  ; Track if there's at least one text command
             RPToSend := ReplaceVariables(RPToSend, presetName)
             if (GuiCanceled)  ; Stop if GUI is canceled
                 return
@@ -1461,10 +1465,23 @@ RunPresetByName(presetName) {
         }
     }
 
+    ; Prevent keypress commands from being processed twice by clearing them from RPToSendArray
+    for index, RPToSend in RPToSendArray {
+        if (RegExMatch(RPToSend, "KeyPress: \[(.*?)\]")) {
+            RPToSendArray[index] := ""
+        }
+    }
+
+    ; Ensure the target application is active BEFORE processing key commands if there are NO text commands
+    if (!hasTextCommands && !TestModeEnabled) {
+        WinActivate, ahk_exe %Application%
+    }
+
     ; Initialize Test GUI if enabled and not canceled
     if (TestModeEnabled && !GuiCanceled) {
         InitTestGui()
     }
+
 
     ; Send each RP line and process special commands
     for index, RPToSend in RPToSendArray {
@@ -1479,11 +1496,18 @@ RunPresetByName(presetName) {
             }
         }
 
-        ; Check if there's a special command for this index
+        ; Ensure window is activated before executing KeyPress commands
         for _, specialCmd in SpecialCommands {
             if (specialCmd.index == index) {
+                ; Ensure window activation before keypress execution
+                if (!TestModeEnabled) {
+                    WinActivate, ahk_exe %Application%
+                    Sleep, 50  ; Short delay to ensure activation
+                }
+
                 specialCmd.command := ProcessSpecialCommands(specialCmd.command)
                 SendMessagewithDelayFunction(specialCmd.command)
+
                 if (TestModeEnabled && !GuiCanceled) {
                     UpdateTestGui(specialCmd.command)
                 }
@@ -1491,6 +1515,7 @@ RunPresetByName(presetName) {
         }
     }
 }
+
 
 
 
@@ -1518,18 +1543,20 @@ OpenAddRPPresetLine:
     Gui, Add, Text, x10 y10 w600, Type your RP Line below. Multiple lines can be added and each line will be added as a Preset line.
 
     ; Input field for the RP line with multiple line support
-    Gui, Add, Edit, vUserRPLine x10 y40 w740 h150 -Wrap HScroll
+    Gui, Add, Edit, vUserRPLine x10 y40 w740 h190 -Wrap HScroll
 
-    ; Add buttons for additional functionality, similar to the Edit Preset GUI
+    ; Add buttons for additional functionality, ensuring alignment
     Gui, Add, Button, x760 y40 w150 h30 gSelectAddPresetRPLine, Choose from Category    ; Opens selection menu
     Gui, Add, Button, x760 y80 w150 h30 gInsertCustomVariablePresetAddLine, Add Custom Variable  ; Adds a custom variable
     Gui, Add, Button, x760 y120 w150 h30 gSpecialVarsAddLine, Special Variables  ; Opens special variables menu
-    Gui, Add, Button, x760 y160 w150 h30 Default gSubmitTypedRPLine, Submit  ; Submits the typed line to the preset
+    Gui, Add, Button, x760 y160 w150 h30 gOpenKeyCommandGUI, Add Key Command  ; Moved to align with the others
+    Gui, Add, Button, x760 y200 w150 h30 Default gSubmitTypedRPLine, Submit  ; Shifted down for better layout
 
     ; Set the window title to include the preset name and show the GUI
     GuiTitle := "Add RP Line to Preset '" . selectedText . "'"
-    Gui, Show, w920 h210, %GuiTitle%
+    Gui, Show, w920 h250, %GuiTitle%  ; Increased height slightly to accommodate new layout
 return
+
 
 
 
@@ -1563,7 +1590,7 @@ SelectAddPresetRPLine:
 
     ; Adding buttons from the top down
     Gui, Add, Button, x820 y372 w150 h30 gAddLineToPreset, Add Selection to Preset
-    Gui, Add, Button, x820 y50 w150 h30 gOpenKeyCommandGUI, Add Key Command
+;    Gui, Add, Button, x820 y50 w150 h30 gOpenKeyCommandGUI, Add Key Command
     Gui, Add, Button, x820 y412 w150 h30 gCancelAddRPLinePreset, Cancel  
 
     ; Load RP lines into the TreeView with children
@@ -1674,7 +1701,7 @@ EditPreset:
         ; Ensure the TreeView is focused after the update
         GuiControl, Focus, PresetTreeView
     } else {
-        ; The user selected an RP line, so we'll open the OpenTypeRPLineGUI directly to edit it
+        ; The user selected an RP line
         TV_GetText(selectedRPLine, selectedID)
         ; Strip the numbering when storing the selected RP line
         selectedRPLine := RegExReplace(selectedRPLine, "^\d+\.\s*")
@@ -1704,12 +1731,15 @@ EditPreset:
         originalRPLine := selectedRPLine
         editing := true  ; Set the editing flag
 
-
-
-        ; Open the OpenTypeRPLineGUI directly, pre-filling it with the selected RP line
-        Gosub OpenTypeRPLineGUI
+        ; Check if the selected RP line is a KeyPress command
+        if (RegExMatch(selectedRPLine, "^KeyPress:")) {
+            Gosub OpenKeyCommandGUI
+        } else {
+            Gosub OpenTypeRPLineGUI
+        }
     }
 return
+
 
 
 
@@ -2687,9 +2717,8 @@ OpenKeyCommandGUI:
     Gui, Show, w300 h120, Select Key Command
 return
 
-
-
 SubmitKeyCommand:
+    global selectedText, originalRPLine, selectedRPLineIndex, editing
     Gui, KeyCmd:Submit  ; Gather inputs from the KeyCmd GUI
 
     if (SpecialKeyChoice = "" or KeyPressCount = "") {
@@ -2703,64 +2732,72 @@ SubmitKeyCommand:
 
     KeyCommand := "KeyPress: [" . SpecialKeyChoice . KeyPressCount . "]"
 
+    ; Read the preset file
     TxtFile := A_ScriptDir "\" vRPLines
     FileRead, content, %TxtFile%
     newContent := ""
     foundPreset := false
-    inPreset := false  ; Track whether we're currently in the right preset block
-    presetHasLines := false  ; Track if the preset already contains lines
+    foundOriginalLine := false
+    presetModified := false
 
     Loop, Parse, content, `n, `r
     {
         line := Trim(A_LoopField)
-        if (line = "") {
-            newContent .= line "`n"  ; Preserve empty lines for formatting
-            continue
-        }
 
-        if (foundPreset && (SubStr(line, 1, 1) = "[" || line = "")) {
-            inPreset := false  ; Stop modification when another category starts or content ends
-        }
-
+        ; Detect if we are inside the correct preset
         if (SubStr(line, 1, StrLen(selectedText) + 1) = selectedText . ";") {
             foundPreset := true
-            inPreset := true  ; Start modifying when the selected preset is found
-        }
+            parts := StrSplit(line, ";")  ; Split the preset line into parts
 
-        if (inPreset && foundPreset) {
-            ; Check if the preset already has lines
-            if (!presetHasLines) {
-                ; If it's the first line being added, don't add a semicolon before the KeyCommand
-                if (line = selectedText . ";") {
-                    line .= " " . KeyCommand
+            if (editing) {
+                ; Editing an existing key press command
+                if (parts.MaxIndex() >= selectedRPLineIndex + 1) {
+                    parts[selectedRPLineIndex + 1] := KeyCommand  ; Replace the key press command
+                    foundOriginalLine := true
                 } else {
-                    line .= "; " . KeyCommand
+                    MsgBox, 48, Error, "Original key press command not found in the preset."
+                    return
                 }
-                presetHasLines := true
             } else {
-                ; For subsequent lines, ensure correct formatting with a semicolon
-                line .= "; " . KeyCommand
+                ; Adding a new key press command at the end
+                parts.Insert(KeyCommand)
             }
-            foundPreset := false  ; Ensure we only append once
+
+            ; Reconstruct the updated preset line
+            line := parts[1]
+            for index, part in parts {
+                if (index > 1) {
+                    line .= ";" . Trim(part)
+                }
+            }
+            presetModified := true
         }
 
         newContent .= line "`n"
     }
 
-    if (!foundPreset && !inPreset) {
+    if (!foundPreset) {
         MsgBox, 48, Error, "Preset `" . selectedText . "` not found in file."
-        Gui, KeyCmd:Destroy
         return
     }
 
+    if (editing && !foundOriginalLine) {
+        MsgBox, 48, Error, "Original key press command not found in the preset."
+        return
+    }
+
+    ; Write the updated content back to the file
     FileDelete, %TxtFile%
     FileAppend, %newContent%, %TxtFile%
 
-    Gui, KeyCmd:Destroy  ; Close the Key Command GUI
-    Gui, RPLine:Destroy  ; Close the AddRPtoPreset GUI
+    ; Refresh the Preset TreeView and close all relevant GUIs
+    Gosub ReloadPresetsTreeView
+    Gui, KeyCmd:Destroy  ; Close the key command GUI
+    Gui, InputRPLine:Destroy  ; Close the OpenAddRPPresetLine GUI
 
-    ; Open the PresetRP GUI
-    Gosub, PresetRP
+
+    ; Reopen the PresetRP GUI
+    Gosub PresetRP
 return
 
 
@@ -2768,6 +2805,7 @@ return
 CancelKeyCommand:
     Gui, KeyCmd:Destroy
 return
+
 
 
 
