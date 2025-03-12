@@ -3167,23 +3167,36 @@ AddCategory:
         return
     }
 
-    ; Sanitize the category name
+    ; Sanitize the category name (remove brackets if the user entered them)
     newCategoryName := StrReplace(newCategoryName, "[", "")
     newCategoryName := StrReplace(newCategoryName, "]", "")
     categoryName := newCategoryName  ; Store the sanitized category name without brackets
-    newCategoryName := "[" . newCategoryName . "]"
+    newCategoryName := "[" . newCategoryName . "]"  ; Format correctly
 
-    ; Add the new category to the file
+    ; Read the file to check if category already exists
     TxtFile := A_ScriptDir "\" vRPLines
-    FileAppend, `n%newCategoryName%`n, %TxtFile%
+    FileRead, txtData, %TxtFile%
 
-    ; Store the last edited preset/category without brackets
+    if (InStr(txtData, newCategoryName)) {
+        MsgBox, 48, Error, "Category already exists."
+        return
+    }
+
+    ; Ensure there is exactly ONE blank line before the new category
+    txtData := Trim(txtData, "`r`n")  ; Trim excess newlines at the end of the file
+    newCategoryBlock := "`n" . newCategoryName . "`n"
+
+    ; Append the properly formatted category to the file
+    FileDelete, %TxtFile%  ; Clear existing file
+    FileAppend, %txtData%%newCategoryBlock%, %TxtFile%  ; Append new category correctly
+
+    ; Reload the UI without sanitizing
     lastEditedPreset := categoryName
     lastEditedRPLine := ""
-    expandCategory := false  ; Do not expand the category after adding
-    Gosub SanitizeFile
+    expandCategory := false
     Gosub ReloadRPLinesTreeView
 return
+
 
 
 
