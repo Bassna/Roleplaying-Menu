@@ -5566,7 +5566,7 @@ SendArrowKey(keyType, pressCount) {
     Loop, % pressCount {
         ; Check the state of multiple hotkeys frequently within each command
         Loop, 5 {  ; Divide the 250ms into smaller chunks for frequent checks
-            Sleep, 75  ; Sleep for 50 ms each time to total around 250 ms
+            Sleep, 50  ; Sleep for 50 ms each time to total around 250 ms
             if (checkStopHotkeys()) {
                 stopSending := 1
                 return
